@@ -43,9 +43,9 @@
 
 inline constexpr double GRAVITATIONAL_ACCELERATION = 9.80665; // [m/s^2]
 
-inline constexpr double UPPER_MOTOR_THRUST_SATURATION_LIMIT_IN_NEWTON = 9.5;
+inline constexpr double UPPER_MOTOR_THRUST_SATURATION_LIMIT_IN_NEWTON = 10.625;
 
-inline constexpr double LOWER_MOTOR_THRUST_SATURATION_LIMIT_IN_NEWTON = 0.3;
+inline constexpr double LOWER_MOTOR_THRUST_SATURATION_LIMIT_IN_NEWTON = 0.6275;
 
 inline constexpr double MINIMUM_VALUE_PUBLISH_MOTORS = 0.05;
 
@@ -53,7 +53,7 @@ inline constexpr double MINIMUM_VALUE_PUBLISH_MOTORS = 0.05;
 struct VehicleInfo 
 {
 
-  const double mass = 1.920; // [kg] vehicle mass
+  const double mass = 2.025; // [kg] vehicle mass
 
   const Eigen::Matrix3d inertia_matrix = (Eigen::Matrix3d() << 
      2.271990e-02, -6.557000e-06, -1.003498e-03,

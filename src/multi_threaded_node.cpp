@@ -170,7 +170,7 @@ void MultiThreadedNode::setupPixhawkActuatorMotorsPublisher()
     10);
   
   // Creation of the timer that periodically calls the execution of the "publisher_actuator_motors_callback"
-  timer_actuator_motors_ = create_wall_timer(
+  timer_actuator_motors_ = create_timer(
     10ms,
     std::bind(
       &MultiThreadedNode::controller_and_publisher_actuator_motors_callback,

@@ -86,8 +86,8 @@ UdpReceiverNode::UdpReceiverNode(
 /// \brief Get the parameters for the ip and port to ping
 void UdpReceiverNode::get_params()
 {
-  // m_ip = GROUND_STATION_IP; // For testing with internal port on groundstation
-  m_ip = ODROID_M1S_IP;     // For implementation with VICON and ODroid M1s
+  m_ip = GROUND_STATION_IP; // For testing with internal port on groundstation
+  // m_ip = ODROID_M1S_IP;     // For implementation with VICON and ODroid M1s
 
   m_port = ODROID_M1S_PORT;
 

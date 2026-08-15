@@ -36,7 +36,7 @@
  **********************************************************************************************************************/
 
 #include "multi_threaded_node.hpp"
-
+#include "main.hpp"
 /*
   Callback function that is executed at a fixed specified rate defined by the "timer_actuator_motors_"
 */
@@ -128,13 +128,26 @@ void MultiThreadedNode::publish_actuator_motors()
 	constexpr int thrust_vector_normalized_rows = 
 			decltype(Control::ControlInternalMembers::thrust_vector_normalized)::RowsAtCompileTime;
 
+	Eigen::Matrix<double, 8, 1> thrust_vector = this->getControl()->getControlInternalMembers().thrust_vector;
+
+	Eigen::Matrix<double, 8, 1> thrust_vector_saturated = (thrust_vector.
+    cwiseMin(UPPER_MOTOR_THRUST_SATURATION_LIMIT_IN_NEWTON).
+    cwiseMax(LOWER_MOTOR_THRUST_SATURATION_LIMIT_IN_NEWTON));
+
 	if (time_current_ < global_params_.TAKEOFF_START_TIME_SECONDS || 
 		  time_current_ > global_params_.DISARM_START_TIME_SECONDS) 
 	{
 		for (int i = 0; i < thrust_vector_normalized_rows; i++)
 		{
-			// X8-COPTER
-			msg.control[i] = MINIMUM_VALUE_PUBLISH_MOTORS;
+
+			if constexpr (IS_SIL_SIMULATION){
+				// X8-COPTER
+				msg.control[i] = LOWER_MOTOR_THRUST_SATURATION_LIMIT_IN_NEWTON;
+			}
+			else {
+				// X8-COPTER
+				msg.control[i] = MINIMUM_VALUE_PUBLISH_MOTORS;
+			}
 		}
 	}
 	else
@@ -155,18 +168,32 @@ void MultiThreadedNode::publish_actuator_motors()
 
 			for (int i = 0; i < thrust_vector_normalized_rows; i++)
 			{
+				if constexpr (IS_SIL_SIMULATION){
+				// X8-COPTER
+				msg.control[i] = thrust_vector_saturated[i] * motor_efficiency[i];
+				}
+				else {
 				// X8-COPTER
 				msg.control[i] = this->getControl()->getControlInternalMembers().thrust_vector_normalized[i] * motor_efficiency[i];
+				}
+				
 			}
 		}
 		else
 		{
 			for (int i = 0; i < thrust_vector_normalized_rows; i++)
 			{
+
+			if constexpr (IS_SIL_SIMULATION){
+				// X8-COPTER
+				msg.control[i] = thrust_vector_saturated[i];
+
+			}
+			else {
 				// X8-COPTER
 				msg.control[i] = this->getControl()->getControlInternalMembers().thrust_vector_normalized[i];
 			}
-		}
+			}
 
 		/* // QUADCOPTER
 		msg.control[0] = this->getControl()->getControlInternalMembers().thrust_vector_quadcopter_normalized[0];
@@ -178,6 +205,7 @@ void MultiThreadedNode::publish_actuator_motors()
 		msg.control[6] = 0.0;
 		msg.control[7] = 0.0;
 		*/
+		}
 	}
 	
 	msg.timestamp = this->get_clock()->now().nanoseconds() / 1000;
