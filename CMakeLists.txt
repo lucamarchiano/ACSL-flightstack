@@ -75,8 +75,8 @@ set(SOURCES
   src/control/outer_loop_safety_mechanism.cpp
   src/control/funnel_two_layer_mrac/funnel_two_layer_mrac.cpp
   src/control/funnel_two_layer_mrac/logging_funnel_two_layer_mrac.cpp
-  # src/control/mrac/logging_mrac.cpp
-  # src/control/mrac/mrac.cpp
+  src/control/mrac/logging_mrac.cpp
+  src/control/mrac/mrac.cpp
   src/control/pid/logging_pid.cpp
   src/control/pid/pid.cpp
   src/control/two_layer_mrac/two_layer_mrac.cpp

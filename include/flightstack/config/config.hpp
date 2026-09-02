@@ -55,7 +55,7 @@ class MultiThreadedNode;
 #define __FUNNEL_TWO_LAYER_MRAC__ 4
 
 // SELECT here the CONTROLLER you want to run -----------------------------------------------------------------------
-#define SELECTED_CONTROLLER __PID__
+#define SELECTED_CONTROLLER __MRAC__
 // ------------------------------------------------------------------------------------------------------------------
 
 // Define ControlType based on SELECTED_CONTROLLER using type aliasing

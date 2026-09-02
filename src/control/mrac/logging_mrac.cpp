@@ -315,6 +315,12 @@ void LogData_MRAC::logInitializeLogging()
   log_ss << logs_directory << "/log_" << std::put_time(std::localtime(&now_c), "%Y%m%d_%H%M%S") << ".log";
   std::string log_filename = log_ss.str();
 
+  std::ofstream handshake("/tmp/flightstack_log_path.txt");
+  if (handshake.is_open()) {
+      handshake << log_filename; // We pass the full path so the server gets the exact HHMMSS timestamp
+      handshake.close();
+  }
+
   // Add the "Tag" attribute with a constant value of "LogDataTag" to the logger
   LogData_MRAC::logger_logdata.add_attribute("Tag", attrs::constant<std::string>("LogDataTag"));
 
